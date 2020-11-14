@@ -7,12 +7,14 @@ import {
   Text,
   StatusBar,
 } from 'react-native';
+import SearchBar from './src/shared/components/SearchBar';
 
 const App = () => {
   return (
     <>
       <StatusBar barStyle="dark-content" />
       <SafeAreaView>
+        <SearchBar />
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.fake_post}></View>
           <View style={styles.fake_post}></View>
