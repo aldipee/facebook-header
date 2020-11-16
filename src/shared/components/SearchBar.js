@@ -32,6 +32,7 @@ class SearchBar extends React.Component {
     this.backButtonOpacity = new Value(0);
     this.contentTranslateY = new Value(0);
     this.contentOpacity = new Value(0);
+    this.scrollY = new Value(0);
   }
 
   _onFocus = () => {
@@ -118,41 +119,41 @@ class SearchBar extends React.Component {
   render() {
     return (
       <>
-        <SafeAreaView style={styles.ContainerSafeArea}>
-          <View style={styles.HeaderContainer}>
-            <View style={styles.Header}>
-              <Image
-                source={require('../../assets/images/FacebookLogo.png')}
-                style={{
-                  width: 30,
-                  height: 30,
-                }}
-              />
-              <TouchableOpacity
+        <Animated.View style={[styles.HeaderContainer, {
+          height: this.props.headerHeight,
+          opacity: this.props.headerOpacity,
+          transform: [{ translateY: this.props.headerTranslateY }]
+        }]}>
+          <Image
+            source={require('../../assets/images/LogoNew.png')}
+            style={{
+              width: 120,
+              height: 90,
+            }}
+          />
+          <TouchableOpacity
+            activeOpacity={1}
+            onPress={this._onFocus}
+            underlayColor={'#ccd0d5'}
+            style={styles.searchIconBox}>
+            <Icon name="search" size={22} color="#000" />
+          </TouchableOpacity>
+          <Animated.View style={[styles.inputBox, { transform: [{ translateX: this.inputBoxTranslateX }] }]}>
+            <Animated.View style={{ opacity: this.backButtonOpacity, }}>
+              <TouchableHighlight
                 activeOpacity={1}
-                onPress={this._onFocus}
                 underlayColor={'#ccd0d5'}
-                style={styles.searchIconBox}>
-                <Icon name="search" size={22} color="#000" />
-              </TouchableOpacity>
-              <Animated.View style={[styles.inputBox, { transform: [{ translateX: this.inputBoxTranslateX }] }]}>
-                <Animated.View style={{ opacity: this.backButtonOpacity, }}>
-                  <TouchableHighlight
-                    activeOpacity={1}
-                    underlayColor={'#ccd0d5'}
-                    onPress={this._onBlur}
-                    style={styles.backIconBox}
-                  >
-                    <Icon name='chevron-left' size={22} color={'#000'} />
-                  </TouchableHighlight>
-                </Animated.View>
-                <TextInput ref={'input'} placeholder='Search' clearButtonMode='always' value={this.state.searchKeyword} style={styles.input} onChange={(value) => {
-                  this.setState({ searchKeyword: value })
-                }} />
-              </Animated.View>
-            </View>
-          </View>
-        </SafeAreaView>
+                onPress={this._onBlur}
+                style={styles.backIconBox}
+              >
+                <Icon name='chevron-left' size={22} color={'#000'} />
+              </TouchableHighlight>
+            </Animated.View>
+            <TextInput ref={'input'} placeholder='Search' clearButtonMode='always' value={this.state.searchKeyword} style={styles.input} onChange={(value) => {
+              this.setState({ searchKeyword: value })
+            }} />
+          </Animated.View>
+        </Animated.View>
         <Animated.View style={[styles.content, {
           opacity: this.contentOpacity,
           transform: [{ translateY: this.contentTranslateY }]
@@ -166,12 +167,10 @@ class SearchBar extends React.Component {
                   <Text style={styles.imagePlaceHolderText}>Type a keyword to search</Text>
                 </View>
               ) : (
-                  <ScrollView>
-                    <View style={styles.searchItem}>
-                      <Icon name='search' size={16} color='#ccc' />
-                      <Text>Search Result 1</Text>
-                    </View>
-                  </ScrollView>
+                  <View style={styles.searchItem}>
+                    <Icon name='search' size={16} color='#ccc' />
+                    <Text>Search Result 1</Text>
+                  </View>
                 )}
             </View>
           </SafeAreaView>
@@ -188,10 +187,11 @@ const styles = StyleSheet.create({
     zIndex: 9999
   },
   HeaderContainer: {
-    height: 50,
     backgroundColor: 'white',
     paddingHorizontal: 18,
-    marginBottom: -14,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   Header: {
     flex: 1,
