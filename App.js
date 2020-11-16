@@ -12,6 +12,7 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Animated, { Easing } from 'react-native-reanimated';
 import SearchBar from './src/shared/components/SearchBar';
+import StoriesList from './src/shared/components/StoriesList'
 const { Value, timing } = Animated
 
 
@@ -39,6 +40,7 @@ const App = () => {
     <>
       <SafeAreaView style={{ flex: 1 }}>
         <SearchBar diffClampY={diffClampY} headerTranslateY={headerTranslateY} headerOpacity={headerOpacity} headerHeight={headerHeight} scrollY={scrollY} />
+
         <Animated.ScrollView
           style={{ flex: 1 }}
           bounces={false} scrollEventThrottle={5} onScroll={Animated.event([{
@@ -48,6 +50,7 @@ const App = () => {
               }
             }
           }])} showsVerticalScrollIndicator={false}>
+          <StoriesList />
           {placeHolder && placeHolder.length && placeHolder.map((data, index) => <View key={`meong-${data}-${index}`} style={styles.fake_post}></View>)}
         </Animated.ScrollView>
       </SafeAreaView>
