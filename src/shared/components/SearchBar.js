@@ -6,8 +6,10 @@ import {
   ScrollView,
   StyleSheet,
   TextInput,
+  Text,
   TouchableHighlight,
   Image,
+  TouchableOpacity,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Animated, {Easing} from 'react-native-reanimated';
@@ -32,9 +34,85 @@ class SearchBar extends React.Component {
     this.contentOpacity = new Value(0);
   }
 
-  _onFocus = () => {};
-  _onBlur = () =>{
+  _onFocus = () => {
+    console.log('Runnung Animation')
+    //Update state
+    this.setState({
+      isFocused : true
+    })
+    // Config Animation
+    // 1. Input Box Moving X Direction
+    const translateInputBoxConfigX = {
+      duration : 200,
+      toValue : 0,
+      easing : Easing.inOut(Easing.ease)
+    }
+    // 2. Show back Button Opacity
+    const backButtonOpacityConfig = {
+      duration : 200,
+      toValue : 1,
+      easing : Easing.inOut(Easing.ease)
+    }
+    // 3. Content show from Y Direction
+    const translateContentConfigY = {
+      duration : 1,
+      toValue : 0,
+      easing : Easing.inOut(Easing.ease)
+    }
+    // 4. Content Opacity Config
+    const contentOpacityConfig = {
+      duration : 200,
+      toValue : 1,
+      easing : Easing.inOut(Easing.ease)
+    }
 
+    //Run The Animations!!!
+    timing(this.inputBoxTranslateX, translateInputBoxConfigX).start()
+    timing(this.backButtonOpacity, backButtonOpacityConfig).start()
+    timing(this.contentTranslateY,translateContentConfigY).start()
+    timing(this.contentOpacity, contentOpacityConfig).start()
+
+    this.refs.input.focus()
+
+  };
+  _onBlur = () =>{
+    console.log('BLURRR')
+    this.setState({
+      isFocused : true
+    })
+    // Config Animation
+    // 1. Input Box Moving X Direction
+    const translateInputBoxConfigX = {
+      duration : 200,
+      toValue : width,
+      easing : Easing.inOut(Easing.ease)
+    }
+    // 2. Show back Button Opacity
+    const backButtonOpacityConfig = {
+      duration : 200,
+      toValue : 1,
+      easing : Easing.inOut(Easing.ease)
+    }
+    // 3. Content show from Y Direction
+    const translateContentConfigY = {
+      duration : 1,
+      toValue : height,
+      easing : Easing.inOut(Easing.ease)
+    }
+    // 4. Content Opacity Config
+    const contentOpacityConfig = {
+      duration : 200,
+      toValue : 0,
+      easing : Easing.inOut(Easing.ease)
+    }
+
+    //Run The Animations!!!
+    timing(this.inputBoxTranslateX, translateInputBoxConfigX).start()
+    timing(this.backButtonOpacity, backButtonOpacityConfig).start()
+    timing(this.contentTranslateY,translateContentConfigY).start()
+    timing(this.contentOpacity, contentOpacityConfig).start()
+
+    this.refs.input.blur()
   }
 
   render() {
@@ -50,19 +128,19 @@ class SearchBar extends React.Component {
                   height: 30,
                 }}
               />
-              <TouchableHighlight
+              <TouchableOpacity
                 activeOpacity={1}
                 onPress={this._onFocus}
                 underlayColor={'#ccd0d5'}
                 style={styles.searchIconBox}>
                 <Icon name="search" size={22} color="#000" />
-              </TouchableHighlight>
+              </TouchableOpacity>
               <Animated.View style={[styles.inputBox, {transform : [{translateX : this.inputBoxTranslateX}]}]}>
-                <Animated.View style={{opacity : this.contentOpacity}}>
+                <Animated.View style={{opacity : this.backButtonOpacity, }}>
                 <TouchableHighlight
                   activeOpacity={1}
                   underlayColor={'#ccd0d5'}
-                  onPress={this._onBlur()}
+                  onPress={this._onBlur}
                   style={styles.backIconBox}
                 >
                     <Icon name='chevron-left' size={22} color={'#000'} />
@@ -81,10 +159,22 @@ class SearchBar extends React.Component {
         }]} >
           <SafeAreaView style={styles.contentSafeArea}>
           <View style={styles.contentInner}>
-
+            <View  style={styles.seperator}/>
+            {this.state.searchKeyword === '' ?(
+              <View style={styles.imagePlaceHolderContainer}>
+                <Image style={styles.imagePlaceHolder} source={require('../../assets/images/Search.png')}/>
+                <Text style={styles.imagePlaceHolderText}>Type a keyword to search</Text>
+              </View>
+            ) : (
+              <ScrollView>
+                <View style={styles.searchItem}>
+                  <Icon name='search' size={16} color='#ccc'/>
+                  <Text>Search Result 1</Text>
+                </View>
+              </ScrollView>
+            )}
           </View>
           </SafeAreaView>
-
         </Animated.View>
       </>
     );
@@ -95,11 +185,12 @@ export default SearchBar;
 
 const styles = StyleSheet.create({
   ContainerSafeArea: {
-    zIndex: 100,
   },
   HeaderContainer: {
     height: 50,
+    backgroundColor : 'white',
     paddingHorizontal: 18,
+    marginBottom : -14,
   },
   Header: {
     flex: 1,
@@ -110,8 +201,8 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   searchIconBox: {
-    width: 40,
-    height: 40,
+    width: 70,
+    height: 70,
     borderRadius: 40,
     flexDirection: 'row',
     justifyContent: 'center',
@@ -119,27 +210,31 @@ const styles = StyleSheet.create({
     backgroundColor: '#e4e6eb',
   },
   inputBox : {
-    backgroundColor : 'white',
-    height : 50,
-    flexDirection : 'row',
-    alignItems : 'center',
-    position : 'absolute',
-    top : 0,
-    left : 0,
-    width : width -32
+    height: 50,
+    flexDirection: 'row',
+    alignItems: 'center',
+    position: 'absolute',
+    top:0,
+    left:0,
+    backgroundColor: 'white',
+    width: width - 32 
   },
   backIconBox : {
-    width : 40,
-    height : 40,
-    borderRadius :40,
-    flexDirection : 'row',
-    justifyContent : 'center',
-    alignItems : 'center'
+    width: 40,
+    height: 40,
+    borderRadius: 40,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 5
   },
   input : {
-    flex : 1,
+    width : width - 70,
+    flexDirection : 'row',
     height :40,
-    backgroundColor : '#e4e6eb'
+    backgroundColor : '#e4e6eb',
+    borderRadius : 6,
+    padding : 10,
   },
   content : {
     width : width,
@@ -150,11 +245,37 @@ const styles = StyleSheet.create({
     zIndex : 999
   },
   contentSafeArea : {
-    flex : 1,
-    backgroundColor : 'white'
+   flex : 1,
+   backgroundColor : 'white'
   },
   contentInner : {
     flex : 1,
     paddingTop : 50
+  },
+  seperator : {
+    height : 1,
+    marginTop: 5
+  },
+  imagePlaceHolderContainer : {
+    flexDirection : 'column',
+    justifyContent : 'center',
+  },
+  imagePlaceHolder : {
+    width : 300,
+    height : 300,
+    alignSelf : 'center',
+  },
+  imagePlaceHolderText : {
+    textAlign : 'center',
+    color : 'grey',
+    fontSize : 16
+  },
+  searchItem : {
+    flexDirection : 'row',
+    height : 40,
+    alignItems : 'center'
+  },
+  itemIcon : {
+
   }
 });

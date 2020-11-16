@@ -14,13 +14,14 @@ const App = () => {
     <>
       <StatusBar barStyle="dark-content" />
       <SafeAreaView>
-        <SearchBar />
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView>
+        <View style={{height : '100%'}}>
+         <SearchBar />
           <View style={styles.fake_post}></View>
           <View style={styles.fake_post}></View>
-          <View style={styles.fake_post}></View>
-          <View style={styles.fake_post}></View>
-        </ScrollView>
+          {/* <View style={styles.fake_post}></View> */}
+         </View>
+         </ScrollView>    
       </SafeAreaView>
     </>
   );
