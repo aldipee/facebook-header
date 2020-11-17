@@ -17,6 +17,8 @@ class StoriesList extends Component {
 
     _onScroll = (e) => {
         const newXScrollValue = e.nativeEvent.contentOffset.x
+        console.log(newXScrollValue, 'newXScrollValue')
+        console.log(new Value(newXScrollValue))
         this.setState({
             scrollX: new Value(newXScrollValue)
         })
@@ -24,27 +26,27 @@ class StoriesList extends Component {
 
     render() {
         const animatedWidthCard = this.state.scrollX.interpolate({
-            inputRange: [0, 100],
+            inputRange: [20, 60],
             outputRange: [100, 50],
             extrapolate: 'clamp'
         })
         const animatedHeightCard = this.state.scrollX.interpolate({
-            inputRange: [0, 170],
+            inputRange: [20, 60],
             outputRange: [170, 50],
             extrapolate: 'clamp'
         })
         const cardPositionTop = this.state.scrollX.interpolate({
-            inputRange: [0, 100],
+            inputRange: [20, 60],
             outputRange: [0, 60],
             extrapolate: 'clamp'
         })
         const cardPositionLeft = this.state.scrollX.interpolate({
-            inputRange: [0, 100],
+            inputRange: [20, 60],
             outputRange: [10, 0],
             extrapolate: 'clamp'
         })
         const cardBorderLeftRadius = this.state.scrollX.interpolate({
-            inputRange: [0, 100],
+            inputRange: [20, 60],
             outputRange: [16, 0],
             extrapolate: 'clamp'
         })
@@ -52,17 +54,17 @@ class StoriesList extends Component {
         // Image
 
         const imageContainerHeight = this.state.scrollX.interpolate({
-            inputRange: [0, 100],
+            inputRange: [20, 60],
             outputRange: [100, 40],
             extrapolate: 'clamp'
         })
         const imageContainerMargin = this.state.scrollX.interpolate({
-            inputRange: [0, 100],
+            inputRange: [20, 60],
             outputRange: [0, 4],
             extrapolate: 'clamp'
         })
         const imageContainerBorderRadius = this.state.scrollX.interpolate({
-            inputRange: [0, 100],
+            inputRange: [20, 60],
             outputRange: [0, 40],
             extrapolate: 'clamp'
         })
@@ -70,29 +72,29 @@ class StoriesList extends Component {
 
         // Button
         const buttonContainerPaddingTop = this.state.scrollX.interpolate({
-            inputRange: [0, 100],
+            inputRange: [20, 60],
             outputRange: [20, -20],
             extrapolate: 'clamp'
         })
         const buttonContainerOpacity = this.state.scrollX.interpolate({
-            inputRange: [0, 50],
+            inputRange: [20, 60],
             outputRange: [1, 0],
             extrapolate: 'clamp'
         })
 
         // Icon
         const animatedIconSize = this.state.scrollX.interpolate({
-            inputRange: [0, 100],
+            inputRange: [0, 60],
             outputRange: [1, 0.6],
             extrapolate: 'clamp'
         })
         const animatedIconPT = this.state.scrollX.interpolate({
-            inputRange: [0, 100],
+            inputRange: [0, 60],
             outputRange: [-15, -28],
             extrapolate: 'clamp'
         })
         const animatedIconPR = this.state.scrollX.interpolate({
-            inputRange: [0, 100],
+            inputRange: [0, 60],
             outputRange: [33, -3],
             extrapolate: 'clamp'
         })
@@ -137,11 +139,19 @@ class StoriesList extends Component {
                             </Animated.View>
                         </Animated.View>
                     </Animated.View>
-                    <ScrollView style={[styles.scrollView]} scrollEventThrottle={16} horizontal={true} showsHorizontalScrollIndicator={false} onScroll={this._onScroll}>
+                    <ScrollView style={[styles.scrollView]} scrollEventThrottle={7} horizontal={true} showsHorizontalScrollIndicator={false} onScroll={this._onScroll}>
                         <View style={styles.fakeCardGhost} />
                         <View style={styles.fakeCard}>
                             <Image source={require('../../assets/images/profilepic.jpg')} style={styles.imageStory} />
                         </View>
+                        <View style={styles.fakeCard} />
+                        <View style={styles.fakeCard} />
+                        <View style={styles.fakeCard} />
+
+                        <View style={styles.fakeCard} />
+                        <View style={styles.fakeCard} />
+                        <View style={styles.fakeCard} />
+
                         <View style={styles.fakeCard} />
                         <View style={styles.fakeCard} />
                         <View style={styles.fakeCard} />
