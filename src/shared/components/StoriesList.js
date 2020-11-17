@@ -10,9 +10,8 @@ const { Value, timing } = Animated
 class StoriesList extends Component {
     constructor(props) {
         super(props)
-        this.state = {
-            scrollX: new Value(0)
-        }
+
+        this.scrollX = new Value(0)
     }
 
     _onScroll = (e) => {
@@ -23,27 +22,27 @@ class StoriesList extends Component {
     }
 
     render() {
-        const animatedWidthCard = this.state.scrollX.interpolate({
+        const animatedWidthCard = this.scrollX.interpolate({
             inputRange: [0, 100],
             outputRange: [100, 50],
             extrapolate: 'clamp'
         })
-        const animatedHeightCard = this.state.scrollX.interpolate({
+        const animatedHeightCard = this.scrollX.interpolate({
             inputRange: [0, 170],
             outputRange: [170, 50],
             extrapolate: 'clamp'
         })
-        const cardPositionTop = this.state.scrollX.interpolate({
+        const cardPositionTop = this.scrollX.interpolate({
             inputRange: [0, 100],
             outputRange: [0, 60],
             extrapolate: 'clamp'
         })
-        const cardPositionLeft = this.state.scrollX.interpolate({
+        const cardPositionLeft = this.scrollX.interpolate({
             inputRange: [0, 100],
             outputRange: [10, 0],
             extrapolate: 'clamp'
         })
-        const cardBorderLeftRadius = this.state.scrollX.interpolate({
+        const cardBorderLeftRadius = this.scrollX.interpolate({
             inputRange: [0, 100],
             outputRange: [16, 0],
             extrapolate: 'clamp'
@@ -51,17 +50,17 @@ class StoriesList extends Component {
 
         // Image
 
-        const imageContainerHeight = this.state.scrollX.interpolate({
+        const imageContainerHeight = this.scrollX.interpolate({
             inputRange: [0, 100],
             outputRange: [100, 40],
             extrapolate: 'clamp'
         })
-        const imageContainerMargin = this.state.scrollX.interpolate({
+        const imageContainerMargin = this.scrollX.interpolate({
             inputRange: [0, 100],
             outputRange: [0, 4],
             extrapolate: 'clamp'
         })
-        const imageContainerBorderRadius = this.state.scrollX.interpolate({
+        const imageContainerBorderRadius = this.scrollX.interpolate({
             inputRange: [0, 100],
             outputRange: [0, 40],
             extrapolate: 'clamp'
@@ -69,29 +68,29 @@ class StoriesList extends Component {
 
 
         // Button
-        const buttonContainerPaddingTop = this.state.scrollX.interpolate({
+        const buttonContainerPaddingTop = this.scrollX.interpolate({
             inputRange: [0, 100],
             outputRange: [20, -20],
             extrapolate: 'clamp'
         })
-        const buttonContainerOpacity = this.state.scrollX.interpolate({
+        const buttonContainerOpacity = this.scrollX.interpolate({
             inputRange: [0, 50],
             outputRange: [1, 0],
             extrapolate: 'clamp'
         })
 
         // Icon
-        const animatedIconSize = this.state.scrollX.interpolate({
+        const animatedIconSize = this.scrollX.interpolate({
             inputRange: [0, 100],
             outputRange: [1, 0.6],
             extrapolate: 'clamp'
         })
-        const animatedIconPT = this.state.scrollX.interpolate({
+        const animatedIconPT = this.scrollX.interpolate({
             inputRange: [0, 100],
             outputRange: [-15, -28],
             extrapolate: 'clamp'
         })
-        const animatedIconPR = this.state.scrollX.interpolate({
+        const animatedIconPR = this.scrollX.interpolate({
             inputRange: [0, 100],
             outputRange: [33, -3],
             extrapolate: 'clamp'
@@ -137,7 +136,13 @@ class StoriesList extends Component {
                             </Animated.View>
                         </Animated.View>
                     </Animated.View>
-                    <ScrollView style={[styles.scrollView]} scrollEventThrottle={16} horizontal={true} showsHorizontalScrollIndicator={false} onScroll={this._onScroll}>
+                    <Animated.ScrollView style={[styles.scrollView]} scrollEventThrottle={16} horizontal={true} showsHorizontalScrollIndicator={false} onScroll={Animated.event([{
+                        nativeEvent: {
+                            contentOffset: {
+                                x: this.scrollX
+                            }
+                        }
+                    }])}>
                         <View style={styles.fakeCardGhost} />
                         <View style={styles.fakeCard}>
                             <Image source={require('../../assets/images/profilepic.jpg')} style={styles.imageStory} />
@@ -146,7 +151,7 @@ class StoriesList extends Component {
                         <View style={styles.fakeCard} />
                         <View style={styles.fakeCard} />
                         <View style={styles.colSpacer} />
-                    </ScrollView>
+                    </Animated.ScrollView>
                 </View>
             </>
         );
